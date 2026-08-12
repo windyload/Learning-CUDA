@@ -686,14 +686,8 @@ __global__ void flashAttentionFloatKernel(
   }
 }
 
-// 大体上同float版,不同的地方在于精度
-// Q/K/V:FP16
-// QK multiplication:FP16 CUDA Core
-// QK accumulation:FP32
-// softmax:FP32
-// P × V multiplication:FP16 CUDA Core
-// O accumulation:FP32
-// output:FP16
+// 大体上同float版,不同的地方在于shared memory存的是half，计算还是升到FLOAT
+
 template <int MAX_HEAD_DIM, int BLOCK_M = 4, int BLOCK_N = 32>
 __global__ void
 flashAttentionHalfKernel(const half *__restrict__ q, const half *__restrict__ k,
